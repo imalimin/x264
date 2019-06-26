@@ -9,7 +9,7 @@ build(){
   HOST=
   EXTRA_CFLAGS=
   EXTRA_X264_FLAGS=
-  PREFIX=$(pwd)/product/$ARCH
+  PREFIX=
 
   OS=linux-x86_64
   if [ ` uname -s ` = "Darwin" ]; then
@@ -18,6 +18,7 @@ build(){
 
   if [ "$ARCH" = "armv7a" ]; then
     echo "------BUILD armv7a--------"
+    PREFIX=$(pwd)/product/armeabi-v7a
     PLATFORM=$NDK/platforms/android-19/arch-arm/
     TOOLCHAIN=$NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/${OS}/bin/arm-linux-androideabi-
     HOST=arm-linux
@@ -28,6 +29,7 @@ build(){
     EXTRA_X264_FLAGS="${EXTRA_X264_FLAGS} --disable-gpac --enable-strip "
   elif [ "$ARCH" = "x86" ]; then
     echo "------BUILD x86--------"
+    PREFIX=$(pwd)/product/x86
     PLATFORM=$NDK/platforms/android-19/arch-x86/
     TOOLCHAIN=$NDK/toolchains/x86-4.9/prebuilt/${OS}/bin/i686-linux-android-
     HOST=i686-linux
