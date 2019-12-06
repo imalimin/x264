@@ -1,5 +1,7 @@
 #!/bin/bash
 NDK=/Users/lmy/Library/Android/android-ndk-r14b
+ANDROID_VER=21
+TOOLCHAIN_VER=4.9
 export TEMDIR=$(pwd)/.tmp
 
 build(){
@@ -27,6 +29,17 @@ build(){
     EXTRA_FLAGS="${EXTRA_FLAGS} -mfloat-abi=softfp -ftree-vectorize -mvectorize-with-neon-quad -ffast-math"
     EXTRA_X264_FLAGS="${EXTRA_X264_FLAGS} --disable-lavf"
     EXTRA_X264_FLAGS="${EXTRA_X264_FLAGS} --disable-gpac --enable-strip "
+  elif [ "$ARCH" = "arm64" ]; then
+    echo "------BUILD arm64--------"
+    PREFIX=$(pwd)/product/arm64-v8a
+    PLATFORM=$NDK/platforms/android-${ANDROID_VER}/arch-arm64/
+    TOOLCHAIN=$NDK/toolchains/aarch64-linux-android-${TOOLCHAIN_VER}/prebuilt/${OS}/bin/aarch64-linux-android-
+    HOST=arm-linux
+    EXTRA_CFLAGS="${EXTRA_FLAGS} -fPIC -marm -DX264_VERSION -DANDROID -DHAVE_PTHREAD -DNDEBUG -static"
+    EXTRA_CFLAGS="${EXTRA_FLAGS} -Os -mfpu=neon"
+    EXTRA_FLAGS="${EXTRA_FLAGS} -mfloat-abi=softfp -ftree-vectorize -mvectorize-with-neon-quad -ffast-math"
+    EXTRA_X264_FLAGS="${EXTRA_X264_FLAGS} --disable-lavf"
+    EXTRA_X264_FLAGS="${EXTRA_X264_FLAGS} --disable-gpac --enable-strip --disable-asm"
   elif [ "$ARCH" = "x86" ]; then
     echo "------BUILD x86--------"
     PREFIX=$(pwd)/product/x86
